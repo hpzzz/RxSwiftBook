@@ -42,6 +42,7 @@ class PhotosViewController: UICollectionViewController {
   // MARK: private properties
   private lazy var photos = PhotosViewController.loadPhotos()
   private lazy var imageManager = PHCachingImageManager()
+  private let bag = DisposeBag()
   
   private let selectedPhotosSubject = PublishSubject<UIImage>()
 
@@ -57,10 +58,48 @@ class PhotosViewController: UICollectionViewController {
     allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
     return PHAsset.fetchAssets(with: allPhotosOptions)
   }
+  
+  private func errorMessage() {
+    alert(title: "No access to Camera Roll", text: "You can grant access to Combinestagram from the Settings app")
+      // convert completable to an observable, as the take(_:scheduler:) operator is not available on the Completable type
+    .asObservable()
+      .take(5.0, scheduler: MainScheduler.instance)
+      .subscribe(onCompleted: { [weak self] in
+        self?.dismiss(animated: true)
+        _ = self?.navigationController?.popViewController(animated: true)
+      })
+    .disposed(by: bag)
+  }
 
   // MARK: View Controller
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    let authorized = PHPhotoLibrary.authorized
+    .share()
+    
+    authorized
+      .skipWhile { $0 == false}
+      // Take that one true element, ignore everything else and complete the sequence
+    .take(1)
+      .subscribe(onNext: { [weak self] _ in
+        self?.photos = PhotosViewController.loadPhotos()
+        DispatchQueue.main.async {
+          self?.collectionView?.reloadData()
+        }
+      })
+    .disposed(by: bag)
+    
+    // false -> false -> completed
+    authorized
+    .skip(1)
+    .takeLast(1)
+      .filter { $0 == false }
+      .subscribe(onNext: { [weak self] _ in
+        guard let errorMessage = self?.errorMessage else { return }
+        DispatchQueue.main.async(execute: errorMessage)
+      })
+    .disposed(by: bag)
 
   }
 
