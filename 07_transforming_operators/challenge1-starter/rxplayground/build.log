@@ -1,0 +1,9 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -scheme RxSwift -workspace RxSwiftPlayground.xcworkspace -sdk iphonesimulator -destination "name=iPhone 8"
+
+Build settings from command line:
+    SDKROOT = iphonesimulator13.5
+
+2020-10-05 13:46:32.173 xcodebuild[70188:2955694] [MT] IDEFileReferenceDebug: [Load] <IDEFileReference, 0x7ff5befef570: name:Rx path:group:Libs/RxSwift/Rx.xcodeproj> Failed to load container at path: /Users/karolharasim/Developer/RxSwiftBook/07_transforming_operators/challenge1-starter/rxplayground/Libs/RxSwift/Rx.xcodeproj, Error: Error Domain=Xcode3ProjectErrorDomain Code=2 "Project /Users/karolharasim/Developer/RxSwiftBook/07_transforming_operators/challenge1-starter/rxplayground/Libs/RxSwift/Rx.xcodeproj cannot be opened because it is missing its project.pbxproj file." UserInfo={NSLocalizedDescription=Project /Users/karolharasim/Developer/RxSwiftBook/07_transforming_operators/challenge1-starter/rxplayground/Libs/RxSwift/Rx.xcodeproj cannot be opened because it is missing its project.pbxproj file.}
+--- xcodebuild: WARNING: Unable to open project file '/Users/karolharasim/Developer/RxSwiftBook/07_transforming_operators/challenge1-starter/rxplayground/Libs/RxSwift/Rx.xcodeproj' in workspace 'RxSwiftPlayground.xcworkspace'.
+xcodebuild: error: The workspace named "rxswiftplayground" does not contain a scheme named "RxSwift". The "-list" option can be used to find the names of the schemes in the workspace.
