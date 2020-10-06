@@ -81,20 +81,37 @@ class ActivityController: UITableViewController {
   }
 
   func fetchEvents(repo: String) {
-    let response = Observable.from([repo])
-      .map { urlString -> URL in
-        return URL(string: "https://api.github.com/repos/\(urlString)/events")!
+     let response = Observable.from(["https://api.github.com/search/repositories?q=language:swift&per_page=5"])
+       .map { urlString -> URL in
+         return URL(string: urlString)!
+       }
+    .map { url -> URLRequest in
+      return URLRequest(url: url)
     }
-    .map { [weak self] url -> URLRequest in
+    .flatMap { request -> Observable<(Any)> in
+      return URLSession.shared.rx.json(request: request)
+    }
+     .flatMap { response -> Observable<String> in
+      guard let response = response as? [String:Any],
+      let items = response["items"] as? [[String:Any]] else {
+        return Observable.empty()
+      }
+      return Observable.from(items.map { $0["full_name"] as! String })
+
+     }
+     .map { urlString -> URL in
+       return URL(string: "https://api.github.com/repos/\(urlString)/events")!
+     }
+     .map { [weak self] url -> URLRequest in
       var request = URLRequest(url: url)
-      if let lastModifierHeader = self?.lastModified.value {
-        request.addValue(lastModifierHeader, forHTTPHeaderField: "Last-Modified")
+      if let modifiedHeader = self?.lastModified.value {
+        request.addValue(modifiedHeader, forHTTPHeaderField: "Last-Modified")
       }
       return request
-    }
-    .flatMap { request -> Observable<(response: HTTPURLResponse, data: Data)> in
+     }
+     .flatMap { request -> Observable<(response: HTTPURLResponse, data: Data)> in
       return URLSession.shared.rx.response(request: request)
-    }
+     }
       // share the observable and keep in a buffer the last emitted event
       // use share(replay: ) to buffer data in case of a new subscriber
   .share(replay: 1)
