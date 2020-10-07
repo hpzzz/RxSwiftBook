@@ -293,3 +293,26 @@ example(of: "scan") {
     })
 }
 
+example(of: "zipChallenge") {
+    let source = Observable.of(1, 3, 5, 7, 9)
+    
+    let scanObservable = source.scan(0, accumulator: +)
+    
+    let zippedObservable = Observable.zip(source, scanObservable) {
+        "Current value: \($0), total sum: \($1)"
+    }
+    .subscribe(onNext: { value in
+        print(value)
+    })
+}
+
+example(of: "scanChallenge") {
+    let source = Observable.of(1, 3, 5, 7, 9)
+    
+    let scanObservable = source.scan((0, 0)) { sum, curr in
+        return (curr, sum.1 + curr)
+    }
+    .subscribe(onNext: { tuple in
+        print("Current value: \(tuple.0), total: \(tuple.1)")
+    })
+}
