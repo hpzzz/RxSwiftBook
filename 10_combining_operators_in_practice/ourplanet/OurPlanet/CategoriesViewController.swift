@@ -33,13 +33,13 @@ import RxCocoa
 class CategoriesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
   @IBOutlet var tableView: UITableView!
+  var downloadView: DownloadView!
   
   let categories = BehaviorRelay<[EOCategory]>(value: [])
   let disposeBag = DisposeBag()
   var activityIndicator: UIActivityIndicatorView!
-  var progressView: UIProgressView!
-  
 
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -47,6 +47,9 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
     activityIndicator.color = .black
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicator)
     activityIndicator.startAnimating()
+    
+    downloadView = DownloadView()
+    
     
     categories
       .asObservable()
@@ -61,6 +64,9 @@ class CategoriesViewController: UIViewController, UITableViewDataSource, UITable
   }
 
   func startDownload() {
+    downloadView.progress.progress = 0.0
+    downloadView.label.text = "Download: 0%"
+    
     let eoCategories = EONET.categories
     let downloadedEvents = eoCategories
       // get all categories and call flatMap to transform them into an observable emitting one observable of events for each category

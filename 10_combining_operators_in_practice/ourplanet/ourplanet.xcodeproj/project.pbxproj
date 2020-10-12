@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B546082252F742000F16D29 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B546081252F742000F16D29 /* DownloadView.swift */; };
 		3D46E6281E258DFC0090C97B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46E6271E258DFC0090C97B /* AppDelegate.swift */; };
 		3D46E62A1E258DFC0090C97B /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D46E6291E258DFC0090C97B /* CategoriesViewController.swift */; };
 		3D46E62D1E258DFC0090C97B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D46E62B1E258DFC0090C97B /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		131CE28449EFCC4674CB716B /* Pods_OurPlanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OurPlanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B546081252F742000F16D29 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		3D46E6241E258DFC0090C97B /* OurPlanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OurPlanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D46E6271E258DFC0090C97B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D46E6291E258DFC0090C97B /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
@@ -62,7 +64,6 @@
 				A162443E83929B2F91C70A34 /* Pods-OurPlanet.debug.xcconfig */,
 				5F706BD85182ACF895003B5F /* Pods-OurPlanet.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -91,6 +92,7 @@
 			children = (
 				3D46E6271E258DFC0090C97B /* AppDelegate.swift */,
 				3D46E6291E258DFC0090C97B /* CategoriesViewController.swift */,
+				1B546081252F742000F16D29 /* DownloadView.swift */,
 				D8D4B1AF36E540D16E9AC066 /* EventsViewController.swift */,
 				D8D4B590E2532FBB4E15A320 /* EventCell.swift */,
 				3D46E62B1E258DFC0090C97B /* Main.storyboard */,
@@ -166,6 +168,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -250,6 +253,7 @@
 				D8D4B3B53FB9DBEFD316986D /* EventCell.swift in Sources */,
 				D8D4B8E35C10E832C1CFE0B0 /* EOCategory.swift in Sources */,
 				D8D4BF1B403B74C10D576473 /* EOError.swift in Sources */,
+				1B546082252F742000F16D29 /* DownloadView.swift in Sources */,
 				D8D4BE89A62A1F0415C0DF42 /* EOEvent.swift in Sources */,
 				D8D4B99E9352271FA7C4C3CA /* EONET.swift in Sources */,
 				D8D4B48C386519868A7FCF37 /* EOLocation.swift in Sources */,
