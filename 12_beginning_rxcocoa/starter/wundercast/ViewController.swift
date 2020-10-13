@@ -31,11 +31,14 @@ import RxSwift
 import RxCocoa
 
 class ViewController: UIViewController {
-  @IBOutlet private var searchCityName: UITextField!
-  @IBOutlet private var tempLabel: UILabel!
-  @IBOutlet private var humidityLabel: UILabel!
-  @IBOutlet private var iconLabel: UILabel!
-  @IBOutlet private var cityNameLabel: UILabel!
+    @IBOutlet private var searchCityName: UITextField!
+    @IBOutlet private var tempLabel: UILabel!
+    @IBOutlet private var humidityLabel: UILabel!
+    @IBOutlet private var iconLabel: UILabel!
+    @IBOutlet private var cityNameLabel: UILabel!
+    @IBOutlet private var celciusLabel: UILabel!
+    @IBOutlet private var fahrenheitLabel: UILabel!
+    @IBOutlet private var tempSwitch: UISwitch!
     
     private let bag = DisposeBag()
     
@@ -57,7 +60,11 @@ class ViewController: UIViewController {
         })
     .disposed(by: bag)
     
-    let search = searchCityName.rx.controlEvent(.editingDidEndOnExit)
+    let temperature = tempSwitch.rx.controlEvent(.valueChanged).asObservable()
+    
+    let textSearch = searchCityName.rx.controlEvent(.editingDidEndOnExit).asObservable()
+    
+    let search = Observable.merge(temperature, textSearch)
         .map { self.searchCityName.text ?? ""}
         .filter { !$0.isEmpty}
         .flatMapLatest { text in
@@ -66,9 +73,22 @@ class ViewController: UIViewController {
     }
     .asDriver(onErrorJustReturn: ApiController.Weather.empty)
     
-    search.map { "\($0.temperature)° C" }
-        .drive(tempLabel.rx.text)
+    search.map { weather in
+        switch self.tempSwitch.isOn {
+        case true:
+            print("TRUE")
+            return "\(Int(Double(weather.temperature) * 1.8 + 32))° F"
+        case false:
+            print("FALSE")
+            return "\(weather.temperature)° C"
+        }
+    }
+    .drive(tempLabel.rx.text)
     .disposed(by: bag)
+    
+//    search.map { "\($0.temperature)° C" }
+//        .drive(tempLabel.rx.text)
+//    .disposed(by: bag)
     
     search.map { $0.icon }
         .drive(iconLabel.rx.text)
@@ -112,5 +132,7 @@ class ViewController: UIViewController {
     humidityLabel.textColor = UIColor.cream
     iconLabel.textColor = UIColor.cream
     cityNameLabel.textColor = UIColor.cream
+    celciusLabel.textColor = .cream
+    fahrenheitLabel.textColor = .cream
   }
 }
