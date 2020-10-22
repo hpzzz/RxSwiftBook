@@ -49,6 +49,8 @@ class ViewController: UIViewController {
 
     style()
     
+
+    
     
     ApiController.shared.currentWeather(city: "Tokyo")
         .observeOn(MainScheduler.instance)
